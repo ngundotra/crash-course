@@ -223,7 +223,7 @@ div.tocify {
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>In this first tutorial on R, you will learn about how to actually use R to work with data, as well as the core concepts behind R programming. You will learn the basics of R syntax as well as several functions in base R. Finally, you will grow familiarity with <strong>R Markdown</strong>, especially as you work within the <a href="r1-workbook.Rmd">r1-workbook</a> associated workbook.</p>
+<p>In this first tutorial on R, you will learn about how to actually use R to work with data, as well as the core concepts behind R programming. You will learn the basics of R syntax as well as several functions in base R. Finally, you will grow familiarity with <strong>R Markdown</strong>, especially as you work within the <a href="r1-workbook.html">r1-workbook</a> associated workbook.</p>
 <div id="about-this-document" class="section level2">
 <h2>About this Document</h2>
 <div id="prerequisites" class="section level3">
@@ -310,8 +310,8 @@ print(`5 and a space`)</code></pre>
 <div id="atomic-objects" class="section level3">
 <h3>Atomic Objects</h3>
 <p>An <strong>atomic object</strong> in R is an object or list of objects that are both <strong>flat</strong> (cannot be reduced or opened further) and of the same <strong>type</strong>.</p>
-<p>There are three <strong>types</strong> in R - we will be going over their properties individually, before discussing <strong>vectors</strong>, which are collections of atomic objects. To check the type of an object, use the <code>class</code> function:</p>
-<pre class="r"><code>class(1.23)</code></pre>
+<p>There are three <strong>types</strong> in R - we will be going over their properties individually, before discussing <strong>vectors</strong>, which are collections of atomic objects. To check the type of an object, use the <code>mode</code> function:</p>
+<pre class="r"><code>mode(1.23)</code></pre>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <div id="types" class="section level4">
 <h4>Types</h4>
@@ -354,7 +354,7 @@ print(`5 and a space`)</code></pre>
 <div id="vectors" class="section level4">
 <h4>Vectors</h4>
 <p>A <strong>vector</strong> is an ordered finite sequence of elements, each of the same type. Just like the atomic objects it contains, a vector is also considered an atomic object*. As such, they must be both <strong>flattened</strong> (fully reduced) and of the <strong>same type</strong>. Vectors are an important building block in R, as they compute quickly and are a way to bind together multiple values.</p>
-<p>*(<em>In fact, singleton values are in fact single-element vectors in R.</em>)</p>
+<p>*(<em>In fact, singleton values are just single-element vectors in R.</em>)</p>
 <div id="vector-basics" class="section level5">
 <h5>Vector Basics</h5>
 <p>To construct a vector, we use the <code>c</code> function, which stands for <em>concatenate</em>, as it can also add more values to the vector. You can also use the <code>:</code> notation to make ordered sequences of numbers. Finally, you can check the length of a vector using <code>length</code>. Observe these behaviors below:</p>
@@ -369,7 +369,7 @@ print(vec)</code></pre>
 </div>
 <div id="vectorized-functionality" class="section level5">
 <h5>Vectorized Functionality</h5>
-<p>Notice that operators (e.g. <code>==</code>) function on vectors <em>element-wise</em>. This is an example of R’s <strong>vectorization</strong> behavior. Essentially, R will try to take basic operators and functions and apply it to each element in a vector automatically. Because of vectorization, vector operation in R is efficient. Here are some examples of vectorization in R:</p>
+<p>Notice that operators (e.g. <code>==</code>) function on vectors <em>element-wise</em>. This is an example of R’s <strong>vectorization</strong> behavior. Essentially, R will try to take basic operators and functions and apply it to each element in a vector automatically, then return the resultant vector. Because of vectorization, vector operation in R is efficient. Here are some examples of vectorization in R:</p>
 <pre class="r"><code>v &lt;- c(1, 12, 169, 7)
 1/v</code></pre>
 <pre><code>## [1] 1.00000000 0.08333333 0.00591716 0.14285714</code></pre>
@@ -586,11 +586,14 @@ library(stringr)</code></pre>
 </div>
 <div id="magrittr" class="section level2">
 <h2><code>magrittr</code></h2>
-<p><code>magrittr</code> is a package that allows you to use <strong>piping</strong> in R. Piping is a way to make your code more readable. Essentially, it allows you to compose functions as <code>x %&gt;% f %&gt;% g</code> rather than using <code>f(g(x))</code>. The symbol for pipe is <code>%&gt;%</code>. Since piping reads left-to-right rather than the usual in-to-out, it is more readable and makes your code easier to manage. Observe the following syntax:</p>
-<pre class="r"><code>sqrt(power(123, 3))</code></pre>
+<p><code>magrittr</code> is a package that allows you to use <strong>piping</strong> in R. Piping is a way to make your code more readable. Essentially, it allows you to compose functions as <code>x %&gt;% g %&gt;% f</code> rather than using <code>f(g(x))</code>. The symbol for pipe is <code>%&gt;%</code>. Since piping reads left-to-right rather than the usual in-to-out, it is more readable and makes your code easier to manage. Furthermore, in <code>magrittr</code> notation, the <code>.</code> symbol is used indicate “what was just passed into the pipe”. Therefore, the following are equivalent:</p>
+<pre class="r"><code>sqrt(power(123, n = 3))</code></pre>
 <pre><code>## [1] 1364.136</code></pre>
 <pre class="r"><code># is equiv. to...
 123 %&gt;% power(n = 3) %&gt;% sqrt</code></pre>
+<pre><code>## [1] 1364.136</code></pre>
+<pre class="r"><code># is equiv. to
+3 %&gt;% power(123, n = .) %&gt;% sqrt</code></pre>
 <pre><code>## [1] 1364.136</code></pre>
 <p>You can also use <code>magrittr</code> to use functions rather than the equivalent operator, again making your code easier to read. To view all the aliases, type <code>multiply_by</code> in your R console. Observe the following example:</p>
 <pre class="r"><code>(((30 + 6) / 4) %% 3) &gt; 0</code></pre>
@@ -672,7 +675,7 @@ str_replace(x, pattern = &quot;py&quot;, replacement = &quot;mara&quot;)</code><
 </div>
 <div id="sneakpeek-at-r2" class="section level1">
 <h1>Sneakpeek at <code>r2</code></h1>
-<p>Next week, we will be covering more data cleaning and other data science tools in R. You will learn how to <strong>tidy</strong> your data using the <code>tidyverse</code>, a set of packages designed to make data wrangling in R as rapid and painless as possible. <code>tidyverse</code> actually contains <code>stringr</code>, so you’re already on your way in learning these tools in R! You will also learn a little bit on how to scrape data from the web.</p>
+<p>Next week, we will be covering data cleaning and other data science tools in R. You will learn how to <strong>tidy</strong> your data using the <code>tidyverse</code>, a set of packages designed to make data wrangling in R as rapid and painless as possible. <code>tidyverse</code> actually contains <code>stringr</code>, so you’re already on your way in learning these tools in R! You will also learn a little bit on how to scrape data from the web.</p>
 </div>
 <div id="additional-reading" class="section level1">
 <h1>Additional Reading</h1>
